@@ -4,9 +4,9 @@
       <el-form-item>
         <el-input v-model="dataForm.userName" placeholder="用户名" clearable />
       </el-form-item>
-      <el-form-item>
+      <el-form-item> <!--v-if="isAuth('sys:user:save')"-->
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('sys:user:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('sys:user:delete')" type="danger" :disabled="dataListSelections.length <= 0" @click="deleteHandle()">批量删除</el-button>
       </el-form-item>
     </el-form>
@@ -128,7 +128,7 @@ export default {
         'pageSize': this.pageSize,
         'userName': this.dataForm.userName
       }).then(data => {
-        this.dataList = data.body.resultList
+        this.dataList = data.body.list
         this.totalPage = data.body.total
         this.dataListLoading = false
       })

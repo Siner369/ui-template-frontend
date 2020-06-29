@@ -54,8 +54,8 @@ export function resetToken() {
 export function getUserList(data) {
   return request({
     url: '/user/list',
-    method: 'post',
-    data: { body: data }
+    method: 'get',
+    param: data
   })
 }
 
