@@ -4,10 +4,10 @@
       <el-form-item>
         <el-input v-model="dataForm.userName" placeholder="用户名" clearable />
       </el-form-item>
-      <el-form-item> <!--v-if="isAuth('sys:user:save')"-->
+      <el-form-item> <!--v-if="isAuth('sys:user:save')"   v-if="isAuth('sys:user:delete')"-->
         <el-button @click="getDataList()">查询</el-button>
         <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('sys:user:delete')" type="danger" :disabled="dataListSelections.length <= 0" @click="deleteHandle()">批量删除</el-button>
+        <el-button  type="danger" :disabled="dataListSelections.length <= 0" @click="deleteHandle()">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -38,6 +38,12 @@
         label="用户名"
       />
       <el-table-column
+        prop="name"
+        header-align="center"
+        align="center"
+        label="姓名"
+      />
+      <el-table-column
         prop="email"
         header-align="center"
         align="center"
@@ -50,13 +56,13 @@
         label="手机号"
       />
       <el-table-column
-        prop="status"
+        prop="state"
         header-align="center"
         align="center"
         label="状态"
       >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
+          <el-tag v-if="scope.row.state === 0" size="small" type="danger">禁用</el-tag>
           <el-tag v-else size="small">正常</el-tag>
         </template>
       </el-table-column>
@@ -68,15 +74,14 @@
         label="创建时间"
       />
       <el-table-column
-        v-if="isAuth('sys:user:update')||isAuth('sys:user:delete')"
         header-align="center"
         align="center"
         width="150"
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button v-if="isAuth('sys:user:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.userNo)">修改</el-button>
-          <el-button v-if="isAuth('sys:user:delete')" type="text" size="small" @click="deleteHandle(scope.row.userNo)">删除</el-button>
+          <el-button  type="text" size="small" @click="addOrUpdateHandle(scope.row.uid)">修改</el-button>
+          <el-button  type="text" size="small" @click="deleteHandle(scope.row.uid)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -105,7 +110,7 @@ export default {
   data() {
     return {
       dataForm: {
-        userName: ''
+        userName: undefined
       },
       dataList: [],
       pageIndex: 1,
@@ -157,8 +162,8 @@ export default {
     },
     // 删除
     deleteHandle(id) {
-      var userNos = id ? [id] : this.dataListSelections.map(item => {
-        return item.userNo
+      var userIds = id ? [id] : this.dataListSelections.map(item => {
+        return item.uid
       })
       this.$confirm(`确定进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
         confirmButtonText: '确定',
@@ -166,7 +171,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteUser({
-          'userNos': userNos
+          'userIds': userIds
         }).then(data => {
           this.$message({
             message: '操作成功',

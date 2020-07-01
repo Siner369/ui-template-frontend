@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('sys:role:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('sys:role:delete')" type="danger" :disabled="dataListSelections.length <= 0" @click="deleteHandle()">批量删除</el-button>
+        <el-button  type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button  type="danger" :disabled="dataListSelections.length <= 0" @click="deleteHandle()">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -52,15 +52,14 @@
         label="创建时间"
       />
       <el-table-column
-        v-if="isAuth('sys:role:update')||isAuth('sys:role:delete')"
         header-align="center"
         align="center"
         width="150"
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button v-if="isAuth('sys:role:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.roleId)">修改</el-button>
-          <el-button v-if="isAuth('sys:role:delete')" type="text" size="small" @click="deleteHandle(scope.row.roleId)">删除</el-button>
+          <el-button  type="text" size="small" @click="addOrUpdateHandle(scope.row.rid)">修改</el-button>
+          <el-button  type="text" size="small" @click="deleteHandle(scope.row.rid)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -116,7 +115,7 @@ export default {
         'pageSize': this.pageSize,
         'roleName': this.dataForm.roleName
       }).then(data => {
-        this.dataList = data.body.resultList
+        this.dataList = data.body.list
         this.totalPage = data.body.total
         this.dataListLoading = false
       })
@@ -137,16 +136,16 @@ export default {
       this.dataListSelections = val
     },
     // 新增 / 修改
-    addOrUpdateHandle(id) {
+    addOrUpdateHandle(rid) {
       this.addOrUpdateVisible = true
       this.$nextTick(() => {
-        this.$refs.addOrUpdate.init(id)
+        this.$refs.addOrUpdate.init(rid)
       })
     },
     // 删除
     deleteHandle(id) {
       var ids = id ? [id] : this.dataListSelections.map(item => {
-        return item.roleId
+        return item.rid
       })
       this.$confirm(`确定进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
         confirmButtonText: '确定',

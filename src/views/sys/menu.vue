@@ -81,7 +81,7 @@
 
 <script>
 import AddOrUpdate from './menu-add-or-update'
-// import { treeDataTranslate } from '@/utils/tree'
+import { treeDataTranslate } from '@/utils/tree'
 import { getMenus, deleteMenu } from '@/api/menu'
 export default {
   components: {
@@ -103,7 +103,7 @@ export default {
     getDataList() {
       this.dataListLoading = true
       getMenus().then(data => {
-        this.dataList = data.body
+        this.dataList = data.body.list
         this.dataListLoading = false
       })
     },

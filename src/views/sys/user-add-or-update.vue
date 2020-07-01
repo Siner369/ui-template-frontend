@@ -8,6 +8,9 @@
       <el-form-item label="用户名" prop="userName">
         <el-input v-model="dataForm.userName" placeholder="登录帐号" />
       </el-form-item>
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="dataForm.name" placeholder="姓名" />
+      </el-form-item>
       <el-form-item label="密码" prop="password" :class="{ 'is-required': !dataForm.id }">
         <el-input v-model="dataForm.password" type="password" placeholder="请输入8-16位密码" />
       </el-form-item>
@@ -20,13 +23,13 @@
       <el-form-item label="手机号" prop="mobile">
         <el-input v-model="dataForm.mobile" placeholder="手机号" />
       </el-form-item>
-      <el-form-item label="角色" size="mini" prop="roleIds">
-        <el-checkbox-group v-model="dataForm.roleIds">
-          <el-checkbox v-for="role in roleList" :key="role.roleId" :label="role.roleId">{{ role.roleName }}</el-checkbox>
+      <el-form-item label="角色" size="mini" prop="ridList">
+        <el-checkbox-group v-model="dataForm.ridList">
+          <el-checkbox v-for="role in roleList" :key="role.rid" :label="role.rid">{{ role.roleName }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
-      <el-form-item label="状态" size="mini" prop="status">
-        <el-radio-group v-model="dataForm.status">
+      <el-form-item label="状态" size="mini" prop="state">
+        <el-radio-group v-model="dataForm.state">
           <el-radio :label="0">禁用</el-radio>
           <el-radio :label="1">正常</el-radio>
         </el-radio-group>
@@ -89,15 +92,15 @@ export default {
       visible: false,
       roleList: [],
       dataForm: {
-        id: 0,
+        uid: 0,
         userName: '',
         password: '',
         comfirmPassword: '',
-        salt: '',
+        name: '',
         email: '',
         mobile: '',
-        roleIds: [],
-        status: 1
+        ridList: [],
+        state: 1
       },
       dataRule: {
         userName: [
@@ -131,7 +134,7 @@ export default {
       }
     },
     notNullJudge(newPassword) {
-      if (this.dataForm.id && !/\S/.test(newPassword)) {
+      if (this.dataForm.uid && !/\S/.test(newPassword)) {
         return false
       } else {
         return true
@@ -166,24 +169,27 @@ export default {
         return true
       }
     },
-    init(id) {
-      this.dataForm.id = id || 0
+    init(uid) {
+      this.dataForm.uid = uid || 0
+      this.visible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].resetFields()
+      })
       getRoles().then(data => {
-        this.roleList = data.body
+        this.roleList = data.body.list
       }).then(() => {
         this.visible = true
         this.$nextTick(() => {
           this.$refs['dataForm'].resetFields()
         })
       }).then(() => {
-        if (this.dataForm.id) {
-          getInfoById(this.dataForm.id).then(data => {
+        if (this.dataForm.uid) {
+          getInfoById(this.dataForm.uid).then(data => {
             this.dataForm.userName = data.body.username
-            this.dataForm.salt = data.body.salt
             this.dataForm.email = data.body.email
             this.dataForm.mobile = data.body.mobile
-            this.dataForm.roleIds = data.body.roleIds
-            this.dataForm.status = data.body.status
+            this.dataForm.ridList = data.body.ridList
+            this.dataForm.state = data.body.state
           })
         }
       })
@@ -192,15 +198,15 @@ export default {
     dataFormSubmit() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          addOrUpdate(this.dataForm.id, {
-            'userNo': this.dataForm.id || undefined,
+          addOrUpdate(this.dataForm.uid, {
+            'uid': this.dataForm.uid || undefined,
             'username': this.dataForm.userName,
             'password': this.dataForm.password,
-            'salt': this.dataForm.salt,
+            'name': this.dataForm.name,
             'email': this.dataForm.email,
             'mobile': this.dataForm.mobile,
-            'status': this.dataForm.status,
-            'roleIds': this.dataForm.roleIds
+            'state': this.dataForm.state,
+            'ridList': this.dataForm.ridList
           }).then(data => {
             this.$message({
               message: '操作成功',

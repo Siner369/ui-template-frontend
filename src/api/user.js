@@ -15,9 +15,9 @@ export function getInfo(token) {
   })
 }
 
-export function getInfoById(id) {
+export function getInfoById(uid) {
   return request({
-    url: `/user/info/${id}`,
+    url: `/user/info/${uid}`,
     method: 'get'
   })
 }
@@ -26,7 +26,7 @@ export function addOrUpdate(id, data) {
   return request({
     url: `/user/${!id ? 'save' : 'update'}`,
     method: 'post',
-    data: { body: data }
+    data: data
   })
 }
 
@@ -55,7 +55,7 @@ export function getUserList(data) {
   return request({
     url: '/user/list',
     method: 'get',
-    param: data
+    params: data
   })
 }
 
@@ -63,7 +63,7 @@ export function deleteUser(data) {
   return request({
     url: '/user/delete',
     method: 'delete',
-    data: { body: data }
+    data: data
   })
 }
 

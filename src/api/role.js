@@ -2,16 +2,16 @@ import request from '@/utils/request'
 
 export function getRoles() {
   return request({
-    url: '/role/select',
+    url: '/role/rlist',
     method: 'get'
   })
 }
 
 export function getPageRoles(data) {
   return request({
-    url: '/role/list',
-    method: 'post',
-    data: { body: data }
+    url: '/role/rlist',
+    method: 'get',
+    data: data
   })
 }
 
@@ -19,21 +19,21 @@ export function deleteRole(ids) {
   return request({
     url: '/role/delete',
     method: 'delete',
-    data: { body: ids }
+    data: ids
   })
 }
 
-export function getRoleInfo(id) {
+export function getRoleInfo(rid) {
   return request({
-    url: `/role/info/${id}`,
+    url: `/role/info/${rid}`,
     method: 'get'
   })
 }
 
-export function addOrUpdate(id, data) {
+export function addOrUpdate(rid, data) {
   return request({
-    url: `/role/${!id ? 'save' : 'update'}`,
+    url: `/role/${!rid ? 'save' : 'update'}`,
     method: 'post',
-    data: { body: data }
+    data: data
   })
 }

@@ -9,7 +9,7 @@ export function nav() {
 
 export function getMenus() {
   return request({
-    url: '/menu/list',
+    url: '/menu/mlist',
     method: 'get'
   })
 }

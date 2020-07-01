@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.rid ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
   >
@@ -8,8 +8,8 @@
       <el-form-item label="角色名称" prop="roleName">
         <el-input v-model="dataForm.roleName" placeholder="角色名称" />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="dataForm.remark" placeholder="备注" />
+      <el-form-item label="备注" prop="roleNote">
+        <el-input v-model="dataForm.roleNote" placeholder="备注" />
       </el-form-item>
       <el-form-item size="mini" label="授权">
         <el-tree
@@ -43,9 +43,9 @@ export default {
         children: 'children'
       },
       dataForm: {
-        id: 0,
+        rid: 0,
         roleName: '',
-        remark: ''
+        roleNote: ''
       },
       dataRule: {
         roleName: [
@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     init(id) {
-      this.dataForm.id = id || 0
+      this.dataForm.rid = id || 0
       getMenus().then(data => {
         this.menuList = treeDataTranslate(data.body, 'id')
       }).then(() => {
@@ -67,10 +67,10 @@ export default {
           this.$refs.menuListTree.setCheckedKeys([])
         })
       }).then(() => {
-        if (this.dataForm.id) {
-          getRoleInfo(this.dataForm.id).then(data => {
+        if (this.dataForm.rid) {
+          getRoleInfo(this.dataForm.rid).then(data => {
             this.dataForm.roleName = data.body.roleName
-            this.dataForm.remark = data.body.remark
+            this.dataForm.roleNote = data.body.roleNote
             var idx = data.body.menuIds.indexOf(this.tempKey)
             if (idx !== -1) {
               data.body.menuIds.splice(idx, data.body.menuIds.length - idx)
@@ -84,10 +84,10 @@ export default {
     dataFormSubmit() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          addOrUpdate(this.dataForm.id, {
-            'roleId': this.dataForm.id || undefined,
+          addOrUpdate(this.dataForm.rid, {
+            'rid': this.dataForm.rid || undefined,
             'roleName': this.dataForm.roleName,
-            'remark': this.dataForm.remark,
+            'roleNote': this.dataForm.roleNote,
             'menuIdList': [].concat(this.$refs.menuListTree.getCheckedKeys(), [this.tempKey], this.$refs.menuListTree.getHalfCheckedKeys())
           }).then(data => {
             this.$message({
