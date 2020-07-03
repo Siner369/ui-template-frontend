@@ -9,14 +9,21 @@ export function nav() {
 
 export function getMenus() {
   return request({
-    url: '/menu/mlist',
+    url: '/menu/select',
     method: 'get'
   })
 }
 
-export function deleteMenu(menuId) {
+export function getMenusExceptButton() {
   return request({
-    url: `/menu/delete/${menuId}`,
+    url: '/menu/selectAll',
+    method: 'get'
+  })
+}
+
+export function deleteMenu(mid) {
+  return request({
+    url: `/menu/delete/${mid}`,
     method: 'delete'
   })
 }
@@ -35,10 +42,10 @@ export function getMenuInfo(menuId) {
   })
 }
 
-export function menuSaveOrUpdate(id, data) {
+export function menuSaveOrUpdate(mid, data) {
   return request({
-    url: `/menu/${!id ? 'save' : 'update'}`,
+    url: `/menu/${!mid ? 'save' : 'update'}`,
     method: 'post',
-    data: { body: data }
+    data: data
   })
 }

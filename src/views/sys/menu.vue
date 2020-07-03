@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :inline="true" size="small" :model="dataForm">
       <el-form-item>
-        <el-button v-if="isAuth('sys:menu:save')" type="primary" icon="el-icon-circle-plus" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button type="primary" icon="el-icon-circle-plus" @click="addOrUpdateHandle()">新增</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -11,14 +11,15 @@
       border
       size="small"
       style="width: 100%; "
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column
-        prop="resourceName"
+        prop="menuName"
         header-align="center"
         label="名称"
       />
       <el-table-column
-        prop="resourceKey"
+        prop="authMark"
         header-align="center"
         align="center"
         :show-overflow-tooltip="true"
@@ -26,13 +27,13 @@
         label="授权标识"
       />
       <el-table-column
-        prop="resourceUrl"
+        prop="menuLink"
         header-align="center"
         align="center"
         :show-overflow-tooltip="true"
         label="链接"
       />
-      <el-table-column
+<!--      <el-table-column
         prop="resourceUrl"
         header-align="center"
         align="center"
@@ -41,16 +42,16 @@
         <template slot-scope="scope">
           <svg-icon :icon-class="scope.row.resourceIcon" />
         </template>
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column
         header-align="center"
         align="center"
         label="类型"
       >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.resourceType === 0" size="small">目录</el-tag>
-          <el-tag v-else-if="scope.row.resourceType === 1" size="small" type="success">菜单</el-tag>
-          <el-tag v-else-if="scope.row.resourceType === 2" size="small" type="info">按钮</el-tag>
+          <el-tag v-if="scope.row.menuType === 'directory'" size="small">目录</el-tag>
+          <el-tag v-else-if="scope.row.menuType === 'menu'" size="small" type="success">菜单</el-tag>
+          <el-tag v-else-if="scope.row.menuType === 'button'" size="small" type="info">按钮</el-tag>
           <el-tag v-else size="small" type="info">外链</el-tag>
         </template>
       </el-table-column>
@@ -62,15 +63,14 @@
         label="排序号"
       />
       <el-table-column
-        v-if="isAuth('sys:menu:update')||isAuth('sys:menu:delete')"
         header-align="center"
         align="center"
         width="150"
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button v-if="isAuth('sys:menu:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button v-if="isAuth('sys:menu:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -81,7 +81,7 @@
 
 <script>
 import AddOrUpdate from './menu-add-or-update'
-import { treeDataTranslate } from '@/utils/tree'
+// import { treeDataTranslate } from '@/utils/tree'
 import { getMenus, deleteMenu } from '@/api/menu'
 export default {
   components: {

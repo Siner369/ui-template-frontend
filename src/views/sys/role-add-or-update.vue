@@ -39,7 +39,7 @@ export default {
       visible: false,
       menuList: [],
       menuListTreeProps: {
-        label: 'resourceName',
+        label: 'menuName',
         children: 'children'
       },
       dataForm: {
@@ -59,7 +59,7 @@ export default {
     init(id) {
       this.dataForm.rid = id || 0
       getMenus().then(data => {
-        this.menuList = treeDataTranslate(data.body, 'id')
+        this.menuList = treeDataTranslate(data.body.list, 'id')
       }).then(() => {
         this.visible = true
         this.$nextTick(() => {
@@ -88,7 +88,7 @@ export default {
             'rid': this.dataForm.rid || undefined,
             'roleName': this.dataForm.roleName,
             'roleNote': this.dataForm.roleNote,
-            'menuIdList': [].concat(this.$refs.menuListTree.getCheckedKeys(), [this.tempKey], this.$refs.menuListTree.getHalfCheckedKeys())
+            'midList': [].concat(this.$refs.menuListTree.getCheckedKeys(), [this.tempKey], this.$refs.menuListTree.getHalfCheckedKeys())
           }).then(data => {
             this.$message({
               message: '操作成功',

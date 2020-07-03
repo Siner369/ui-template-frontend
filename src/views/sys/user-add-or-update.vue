@@ -187,6 +187,7 @@ export default {
           getInfoById(this.dataForm.uid).then(data => {
             this.dataForm.userName = data.body.username
             this.dataForm.email = data.body.email
+            this.dataForm.name = data.body.name
             this.dataForm.mobile = data.body.mobile
             this.dataForm.ridList = data.body.ridList
             this.dataForm.state = data.body.state
