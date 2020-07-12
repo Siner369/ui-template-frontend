@@ -107,7 +107,7 @@ export default {
           { required: true, message: '用户名不能为空', trigger: 'blur' }
         ],
         password: [
-          { validator: validatePassword, trigger: 'blur' }
+          { }  // validator: validatePassword, trigger: 'blur'
         ],
         comfirmPassword: [
           { validator: validateComfirmPassword, trigger: 'blur' }

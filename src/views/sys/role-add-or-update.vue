@@ -71,11 +71,11 @@ export default {
           getRoleInfo(this.dataForm.rid).then(data => {
             this.dataForm.roleName = data.body.roleName
             this.dataForm.roleNote = data.body.roleNote
-            var idx = data.body.menuIds.indexOf(this.tempKey)
+            var idx = data.body.midList.indexOf(this.tempKey)
             if (idx !== -1) {
-              data.body.menuIds.splice(idx, data.body.menuIds.length - idx)
+              data.body.midList.splice(idx, data.body.midList.length - idx)
             }
-            this.$refs.menuListTree.setCheckedKeys(data.body.menuIds)
+            this.$refs.menuListTree.setCheckedKeys(data.body.midList)
           })
         }
       })

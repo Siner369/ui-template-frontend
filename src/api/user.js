@@ -22,9 +22,9 @@ export function getInfoById(uid) {
   })
 }
 
-export function addOrUpdate(id, data) {
+export function addOrUpdate(rid, data) {
   return request({
-    url: `/user/${!id ? 'save' : 'update'}`,
+    url: `/user/${!rid ? 'save' : 'update'}`,
     method: 'post',
     data: data
   })

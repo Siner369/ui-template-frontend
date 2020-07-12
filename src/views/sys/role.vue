@@ -38,7 +38,7 @@
         label="角色名称"
       />
       <el-table-column
-        prop="remark"
+        prop="roleNote"
         header-align="center"
         align="center"
         label="备注"
@@ -89,7 +89,8 @@ export default {
   data() {
     return {
       dataForm: {
-        roleName: ''
+        roleName: '',
+        roleNote: ''
       },
       dataList: [],
       pageIndex: 1,
